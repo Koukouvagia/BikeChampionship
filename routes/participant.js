@@ -1,11 +1,18 @@
 const express = require('express');
-const router = express.Router();
-const handlers = require('../handlers/participantHandlers');
+const Router = express.Router;
+const passport = require('passport');
 
-router.get('/', (req, res, next) => handlers.getParticipant(req, res).catch(next));
+const {
+    getParticipant,
+    putParticipant,
+    deleteParticipant
+} = require('../handlers/participantHandlers');
 
-router.put('/', (req, res, next) => handlers.putParticipant(req, res).catch(next));
+const router = new Router();
 
-router.delete('/', (req, res, next) => handlers.deleteParticipant(req, res).catch(next));
+router.route('/')
+    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => getParticipant(req, res).catch(next))
+    .put(passport.authenticate('jwt', {session: false}), (req, res, next) => putParticipant(req, res).catch(next))
+    .delete(passport.authenticate('jwt', {session: false}), (req, res, next) => deleteParticipant(req, res).catch(next));
 
 module.exports = router;

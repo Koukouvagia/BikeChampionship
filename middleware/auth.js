@@ -1,30 +1,106 @@
-const httpError = require('../utils/httpError');
-const Participant = require('../models/Participant.model');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+const passportJWT = require('passport-jwt');
+const LocalStrategy = require('passport-local').Strategy;
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+const Participant = require('../models/Participant.model');
+const JwtAuth = require('../models/JwtAuth');
+const jwtOptions = {};
+jwtOptions.jwtFromRequest = req => {
+    const { authorization } = req.headers;
+    const jwt = authorization.split(' ')[1];
+    return jwt;
+}
+jwtOptions.passReqToCallback = true;
+jwtOptions.secretOrKey = process.env.TOKEN_SECRET;
+const httpError = require('../utils/httpError');
 
-async function middleware(req, res, next) {
-    let token, decoded;
+function jwtStrategy(req, jwt_payload, done) {
+    const header = req.headers.authorization;
+    let token;
 
-    if (req.headers.authorization === null || req.headers.authorization === undefined) {
-        throw new httpError('No token', 403);
+    if (header !== undefined) {
+        const bearer = header.split(' ');
+        token = bearer[1];
     }
 
-    const bearer = req.headers.authorization.split(' ');
+    JwtAuth.findOne({ token })
+        .then(admin => {
+            if (admin) {
+                return Participant.findOne({'_id': jwt_payload.id})
+                    .then(participant => {
+                        if (participant) {
+                            req.participant = participant._id.toString();
+                            done(null, admin);
+                        } else {
+                            done(null, false);
+                        }
+                    })
+                } else {
+                    done(null, false);
+                }
+        })
+        .catch(done);
+}
 
-    token = bearer[0];
-    console.log(token);
-    decoded = jwt.verify(token, '@secretKey');
-    const participant = await Participant.findOne(decoded.payload._id);
-    req.participant = participant._id;
-    console.log(req.participant);
-    
-    next();
+function localStrategy(username, password, done) {
+    Participant.findOne({$or: [{email: username}, {username: username}]})
+        .then(participant => {
+            if (!participant) {
+                done(null, false, {message: 'Invalid credentials'});
+                return;
+            }
+
+            participant.checkPassword(password)
+                .then(pass => {
+                    if (!pass) done(null, false, {message: 'Invalid credentials'});
+                    done(null, participant);
+                })
+                .catch(err => done(err));
+            
+        }).catch(err => {
+        done(err);
+    });
 }
 
 
-const authMiddleware = (req, res, next) => {
-    console.log('lalallala');
-    middleware(req, res, next).catch(next);
-};
+function login(req, res, next) {
+    passport.authenticate('local', (err, participant) => {
+        if (err) {
+            next(new httpError('Login failed', 401));
+        }
+        else if (!participant) {
+            next(new httpError('Participant not found', 401));
+        } else {
+            const token = jwt.sign({'id': participant._id}, process.env.TOKEN_SECRET, {
+                expiresIn: '1 day'
+            });
+            JwtAuth.create({ userId: participant._id, token: token }).catch(error => console.log(error));
+            const message = {success: true, token: token};
+            return res.status(200).json(message);// todo something went wrong here
+        }
+    })(req, res, next);
+    `1`
+}
 
-module.exports = authMiddleware;
+function logout(req, res, next) {
+    Participant.findById(req.participant)
+        .then(user => {
+            console.log(req.participant);
+            if (!user) {
+                next(new httpError('Logout failed', 404));
+            }
+            JwtAuth.deleteOne({userId: req.participant}).catch(error => console.log(error));
+            return res.status(200).send({message: 'Logout successful'});
+        })
+        .catch(err => {
+            next(err)
+        });
+}
+
+passport.use(new JwtStrategy(jwtOptions, jwtStrategy));
+passport.use(new LocalStrategy(localStrategy));
+
+module.exports.login = login;
+module.exports.logout = logout;

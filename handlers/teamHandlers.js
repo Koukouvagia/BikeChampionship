@@ -24,7 +24,7 @@ async function createTeam(req, res) {
 async function joinTeam(req, res) {
     const { teamId } = req.params;
 
-    const participant = await Participant.findById(req.participant);
+    let participant = await Participant.findById(req.participant);
 
     const team = await Team.findById({ _id: teamId });
 
@@ -38,7 +38,11 @@ async function joinTeam(req, res) {
         if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`);
         team.cyclists.push(cyclist);
 
-        team.save();
+        await team.save();
+
+        participant.teamId = teamId;
+
+        await participant.save();
 
         return res.json(team);
     }
@@ -52,7 +56,11 @@ async function joinTeam(req, res) {
 
         team.medicals.push(medical);
         
-        team.save();
+        await team.save();
+
+        participant.teamId = teamId;
+
+        await participant.save();
 
         return res.json(team);
     }
@@ -66,7 +74,11 @@ async function joinTeam(req, res) {
 
         team.mechanics.push(mechanic);
         
-        team.save();
+        await team.save();
+
+        participant.teamId = teamId;
+
+        await participant.save();
 
         return res.json(team);
     }
@@ -81,7 +93,7 @@ async function getTeams(req, res) {
 
 async function leaveTeam(req, res) {
 
-    const participant = await Participant.findById(req.participant);
+    let participant = await Participant.findById(req.participant);
 
     if (participant.role === 'Cyclist') {
 
@@ -94,6 +106,10 @@ async function leaveTeam(req, res) {
         team.mechanic.splice(index, 1);
 
         const currentTeam = await team.save();
+
+        participant.teamId = '';
+
+        await participant.save();
         
         return res.json(currentTeam);
 
@@ -111,6 +127,10 @@ async function leaveTeam(req, res) {
 
         const currentTeam = await team.save();
 
+        participant.teamId = '';
+
+        await participant.save();
+
         return res.json(currentTeam);
 
     }
@@ -127,6 +147,10 @@ async function leaveTeam(req, res) {
 
         const currentTeam = await team.save();
 
+        participant.teamId = '';
+
+        await participant.save();
+
         return res.json(currentTeam);
     }
 }
@@ -139,6 +163,12 @@ async function deleteTeam(req, res) {
     if (team === null || team === undefined) throw new httpError('Team not found', 404);
     
     await team.deleteOne({ _id: team._id });
+
+    const participant = await Participant.findById(req.participant);
+
+    participant.teamId = '';
+
+    await participant.save();
 
     return res.json(team);
 }

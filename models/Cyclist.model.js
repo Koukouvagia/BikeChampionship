@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// const User = require('./User.model');
 
 const CyclistSchema = new Schema({
     participant: {
@@ -16,7 +15,11 @@ const CyclistSchema = new Schema({
         enum: ['Sprinter', 'Climber', 'All-rounder', 'Puncher'],
         required: true
     }
+},
+{
+        timestamps: true
 });
+
 
 const cyclistModel = mongoose.model('Cyclist', CyclistSchema, 'Cyclists');
 

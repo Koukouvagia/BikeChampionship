@@ -21,13 +21,19 @@ async function postCyclist(req, res) {
 
     if (cyclist !== null && cyclist !== undefined) throw new httpError('Cyclist already exists');
 
-
     const response = await Cyclist.create({ participant, shirtNumber, style });
 
     participant.role = 'cyclist';
     await participant.save();
 
     return res.json(response);
+}
+
+async function getCyclists(req ,res) {
+    
+    const cyclists = await Cyclist.find();
+
+    res.json(cyclists);
 }
 
 async function putCyclist(req, res) {
@@ -98,6 +104,8 @@ async function postMechanic(req, res) {
 
     return res.json(response);
 }
+
+
 
 async function putMechanic(req, res) {
 
@@ -215,6 +223,7 @@ async function deleteMedical(req, res) {
 
 module.exports = { 
     postCyclist,
+    getCyclists,
     putCyclist,
     deleteCyclist,
     postMechanic,

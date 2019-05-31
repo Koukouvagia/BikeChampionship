@@ -1,13 +1,27 @@
 const express = require('express');
-const router = express.Router();
+const Router = express.Router;
+const passport = require('passport');
 const handlers = require('../handlers/memberHandlers');
 
-router.post('/cyclist', (req, res, next) => handlers.postCyclist(req, res).catch(next));
+const router = new Router();
 
-router.put('/cyclist', (req, res, next) => handlers.putCyclist(req, res).catch(next));
+router.route('/cyclist')
+    .post(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.postCyclist(req, res).catch(next))
+    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getCyclists(req, res).catch(next))
+    .put(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.putCyclist(req, res).catch(next))
+    .delete(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.deleteCyclist(req, res).catch(next));
+    
+router.route('/mechanic')
+    .post(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.postMechanic(req, res).catch(next));
+    .get
+//     .get
+//     .put
+//     .delete
 
-router.delete('/cyclist', (req, res, next) => handlers.deleteCyclist(req, res).catch(next));
-
-router.post('/mechanic', (req, res, next) => handlers.postMechanic(req, res).catch(next));
+// router.route('/medical')
+//     .post
+//     .get
+//     .put
+//     .delete
 
 module.exports = router;

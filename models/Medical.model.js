@@ -14,6 +14,9 @@ const MedicalSchema = new Schema({
         required: true
     },
     vehicle: String
+},
+{
+    timestamps: true
 });
 
 const medicalModel = mongoose.model('Medical', MedicalSchema, 'Medicals');

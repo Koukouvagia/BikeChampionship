@@ -14,6 +14,9 @@ const MechanicSchema = new Schema({
         required: true
     },
     vehicle: String
+},
+{
+    timestamps: true
 });
 
 const mechanicModel = mongoose.model('Mechanic', MechanicSchema, 'Mechanics');

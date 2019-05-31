@@ -1,20 +1,38 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const bcrypt = require('bcrypt');
+
 const ParticipantSchema = new Schema({
-    fullname: {
+    username: {
         type: String,
         unique: true,
-        required: true 
+        required: true
     },
-    age: {
-        type: Number,
-        required: true,
+    email: {
+        type: String,
+        required: true
     },
-    contactInfo: String,
+    password: {
+        type: String,
+        required: true
+    },
+    teamId: { type: Schema.Types.ObjectId, ref: 'Team' },
     role: String
+},
+{
+    timestamps: true
 });
 
-const participantModel = mongoose.model('Participant', ParticipantSchema, 'Participants');
+ParticipantSchema.pre('save', async function() {
+    if (!this.isModified('password')) return;
+    let saltRounds = 13;
+  
+    this.password = await bcrypt.hash(this.password, saltRounds);
+});
 
-module.exports = participantModel;
+ParticipantSchema.methods.checkPassword = async function(password) {
+    return bcrypt.compare(password, this.password);
+};
+
+module.exports = mongoose.model('Participant', ParticipantSchema, 'Participants');

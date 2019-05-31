@@ -41,7 +41,3 @@ const connectionRestart = () => {
 connectionRestart();
 
 module.exports = mongoose;
-
-
-
-

@@ -1,6 +1,27 @@
 const httpError = require('../utils/httpError');
 const Participant = require('../models/Participant.model');
 
+async function registerParticipant(req, res) {
+    const { username, password, email, fullname, age } = req.body;
+
+    const participantObj = { username, password, email, fullname, age };
+
+    if (username === null || username === undefined)
+        throw new httpError('Username not specified', 400);
+
+    let participant = await Participant.findOne({ username });
+
+    console.log(participant);
+
+    if (participant !== null && participant !== undefined)
+        throw new httpError('Already registered', 409);
+
+    participant = await Participant.create(participantObj);
+    
+    res.json(participant);
+}
+
+
 async function getParticipant(req, res) {
     const participant = await Participant.findById(req.participant);
 
@@ -36,7 +57,9 @@ async function deleteParticipant(req, res) {
     res.json(participant);
 }
 
-module.exports = { 
+module.exports = {
+    registerParticipant,
     getParticipant,
-    putParticipant
+    putParticipant,
+    deleteParticipant
 };

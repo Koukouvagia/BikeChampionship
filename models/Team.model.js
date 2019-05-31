@@ -15,6 +15,9 @@ const TeamSchema = new Schema({
     cyclists: [{ type: Schema.Types.ObjectId, ref: 'Cyclist' }],
     medicals: [{ type: Schema.Types.ObjectId, ref: 'Medical' }],
     mechanics: [{ type: Schema.Types.ObjectId, ref: 'Mechanic' }]
+},
+{
+    timestamps: true
 });
 
 const teamModel = mongoose.model('Team', TeamSchema, 'Teams');

@@ -1,27 +1,31 @@
 const express = require('express');
+const passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 const morgan = require('morgan');
-const cors = require('cors');
-const authMiddleware = require('./middleware/auth');
-const signRouter = require('./routes/sign');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+require('dotenv').config({ path: __dirname + '/.env' });
+
+// Routes
+
+const indexRouter = require('./routes/index');
 const teamRouter = require('./routes/team');
 const participantRouter = require('./routes/participant');
 const memberRouter = require('./routes/member');
-
 const app = express();
 
+app.use(helmet());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use(cors());
-
-// Sign Up
-app.use('/index', signRouter);
-
-// Middleware
-app.use(authMiddleware);
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(passport.initialize());
 
 // Routes
+app.use('/index', indexRouter);
 app.use('/participant', participantRouter);
 app.use('/team', teamRouter);
 app.use('/member', memberRouter);

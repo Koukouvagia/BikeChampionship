@@ -1,13 +1,24 @@
 const express = require('express');
-const router = express.Router();
-const handlers = require('../handlers/teamHandlers');
+const Router = express.Router;
+const passport = require('passport');
 
-router.post('/', (req, res, next) => handlers.createTeam(req, res).catch(next));
+const {
+    createTeam,
+    getTeams,
+    joinTeam,
+    deleteTeam
+} = require('../handlers/teamHandlers');
 
-router.get('/', (req, res, next) => handlers.getTeams(req, res).catch(next));
+const router = new Router();
 
-router.put('/join/:teamId', (req, res, next) => handlers.joinTeam(req, res).catch(next));
+router.route('/')
+    .post(passport.authenticate('jwt', {session: false}), (req, res, next) => createTeam(req, res).catch(next))
+    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => getTeams(req, res).catch(next));
 
-router.delete('/:teamId', (req, res, next) => handlers.deleteTeam(req, res).catch(next));
+router.route('/join/:teamId')
+    .put(passport.authenticate('jwt', {session: false}), (req, res, next) => joinTeam(req, res).catch(next));
+
+router.route('/:teamId')
+    .delete(passport.authenticate('jwt', {session: false}), (req, res, next) => deleteTeam(req, res).catch(next));
 
 module.exports = router;
