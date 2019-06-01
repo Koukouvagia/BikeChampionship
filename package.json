@@ -21,7 +21,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node ./db/server"
+    "start": "node ./bin/server"
   },
   "repository": {
     "type": "git",

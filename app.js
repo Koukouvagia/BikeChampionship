@@ -12,7 +12,10 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const indexRouter = require('./routes/index');
 const teamRouter = require('./routes/team');
 const participantRouter = require('./routes/participant');
-const memberRouter = require('./routes/member');
+const cyclistRouter = require('./routes/cyclist');
+const mechanicRouter = require('./routes/mechanic');
+const medicalRouter = require('./routes/medical');
+
 const app = express();
 
 app.use(helmet());
@@ -28,7 +31,10 @@ app.use(passport.initialize());
 app.use('/index', indexRouter);
 app.use('/participant', participantRouter);
 app.use('/team', teamRouter);
-app.use('/member', memberRouter);
+app.use('/cyclist', cyclistRouter);
+app.use('/mechanic', mechanicRouter);
+app.use('/medical', medicalRouter);
+
 
 app.use((error, req, res, next) => {
     let status = error.status;
