@@ -10,7 +10,7 @@ The api is built with Node.js and Express.js framework. For data transactions re
 Schema-model building with Mongoose. 
 Included Models are: Team, Cyclist, Medical, Mechanic, Participant, PersonalInfo, Jwt(token)
 
-# Registration
+# Authentication on Registration
 
 In order to participate a client (cyclist-medical-mechanic) and his team on this event, he is needed to sign up.Signing up with some required data, an
 acces token is generated, his password is being saved hashed in MongoDB. In step two, he needs to login and make request to all endpoints in order to participate.
