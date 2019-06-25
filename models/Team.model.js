@@ -5,7 +5,7 @@ const TeamSchema = new Schema({
     name: {
         type: String,
         unique: true,
-        require: true
+        required: true
     },
     motto: String,
     teamLeader: {

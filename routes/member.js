@@ -13,14 +13,14 @@ router.route('/cyclist')
     
 router.route('/mechanic')
     .post(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.postMechanic(req, res).catch(next))
-    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getMechanics(req, res).catch(next));
-//     .put
-//     .delete
+    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getMechanics(req, res).catch(next))
+    .put(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.putMechanics(req, res).catch(next))
+    .delete(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.putMechanic(req, res).catch(next));
 
-// router.route('/medical')
-//     .post
-//     .get
-//     .put
-//     .delete
+router.route('/medical')
+    .post(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.postMedical(req, res).catch(next))
+    .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getMedicals(req, res).catch(next))
+    .put(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.putMedicals(req, res).catch(next))
+    .delete(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.deleteMedical(req, res).catch(next));
 
 module.exports = router;

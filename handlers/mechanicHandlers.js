@@ -5,7 +5,6 @@ const Team = require('../models/Team.model');
 
 async function postMechanic(req, res) {
     const { workingField, vehicle } = req.body;    
-    
 
     if (workingField === null || workingField === undefined) throw new httpError('Working field not specified', 400);
 
@@ -30,12 +29,20 @@ async function postMechanic(req, res) {
 }
 
 async function getMechanics(req, res) {
-    const mechanics = await Mechanic.find();
+    const {page} = req.query;
+  
+    const PAGE_RESULTS = 20;
+  
+    if (page === null || page === undefined) {
+      const mechanics = await Mechanic.find();
 
-    if (mechanics.length === 0)
-        throw new httpError('Mechanics not found', 404);
-
-    res.json(mechanics);
+      if (mechanics.length === 0) throw new httpError('Cyclists not found', 404);
+      
+      return res.json(mechanics);
+    }
+  
+    const mechanics = await Mechanic.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    return res.json(mechanics);
 }
 
 async function getMechanicById(req, res) {
@@ -46,7 +53,7 @@ async function getMechanicById(req, res) {
     if (mechanic === null || mechanic === undefined)
         throw new httpError('Mechanic not found', 404);
 
-    res.json(mechanic);
+    return res.json(mechanic);
 }
 
 async function putMechanic(req, res) {

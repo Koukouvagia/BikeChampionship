@@ -6,11 +6,11 @@ const bcrypt = require('bcrypt');
 const ParticipantSchema = new Schema({
     username: {
         type: String,
-        unique: true,
         required: true
     },
     email: {
         type: String,
+        unique: true,
         required: true
     },
     password: {
@@ -18,7 +18,10 @@ const ParticipantSchema = new Schema({
         required: true
     },
     teamId: { type: Schema.Types.ObjectId, ref: 'Team' },
-    role: String
+    role: {
+        type: String,
+        enum: ['cyclist', 'medical', 'mechanic']
+    }
 },
 {
     timestamps: true

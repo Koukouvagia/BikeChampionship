@@ -27,12 +27,23 @@ async function postCyclist(req, res) {
     return res.json(response);
 }
 
-async function getCyclists(req ,res) {
-    
-    const cyclists = await Cyclist.find();
+async function getCyclists(req, res) {
+    const {page} = req.query;
+  
+    const PAGE_RESULTS = 20;
+  
+    if (page === null || page === undefined) {
+      const cyclists = await Cyclist.find();
 
-    res.json(cyclists);
+      if (cyclists.length === 0) throw new httpError('Cyclists not found', 404);
+
+      return res.json(cyclists);
+    }
+  
+    const cyclists = await Cyclist.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    return res.json(cyclists);
 }
+
 
 async function getCyclistById(req, res) {
     const { cyclistId } = req.params;
@@ -42,7 +53,7 @@ async function getCyclistById(req, res) {
     if (cyclist === null || cyclist === undefined)
         throw new httpError('Cyclist not found', 404);
 
-    res.json(cyclist);
+    return res.json(cyclist);
 }
 
 async function putCyclist(req, res) {

@@ -4,13 +4,13 @@ const passport = require('passport');
 const auth = require('../middleware/auth');
 
 const {
-    registerParticipant
+    postParticipant
 } = require('../handlers/participantHandlers');
 
 const router = new Router();
 
-router.route('/create')
-    .post((req, res, next) => registerParticipant(req, res, next).catch(next));
+router.route('/register')
+    .post((req, res, next) => postParticipant(req, res, next).catch(next));
 
 router.route('/login')
     .post((req, res, next) => auth.login(req, res, next));

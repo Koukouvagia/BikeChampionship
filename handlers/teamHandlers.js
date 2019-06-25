@@ -30,6 +30,9 @@ async function joinTeam(req, res) {
 
     if (team === null || team === undefined) throw new httpError('Team not found', 404);
 
+    if (participant.role === null || participant.role === undefined)
+        throw new httpError('Role not selected', 404);
+
     if (participant.role === 'cyclist') {
         const cyclist = await Cyclist.findOne({ participant: req.participant });
 
@@ -45,9 +48,8 @@ async function joinTeam(req, res) {
         await participant.save();
 
         return res.json(team);
-    }
 
-    if (participant.role === 'medical') {
+    } else if (participant.role === 'medical') {
         const medical = await Medical.findOne({ participant: req.participant });
 
         const index = team.cyclists.findIndex(cycl => cycl === medical._id );
@@ -63,9 +65,8 @@ async function joinTeam(req, res) {
         await participant.save();
 
         return res.json(team);
-    }
 
-    if (participant.role === 'mechanic') {
+    } else if (participant.role === 'mechanic') {
         const mechanic = await Mechanic.findOne({ participant: req.participant });
 
         const index = team.cyclists.findIndex(cycl => cycl === mechanic._id );
@@ -86,9 +87,20 @@ async function joinTeam(req, res) {
 
 
 async function getTeams(req, res) {
-    const teams = await Team.find();
+    const {page} = req.query;
+  
+    const PAGE_RESULTS = 20;
+  
+    if (page === null || page === undefined) {
+      const teams = await Team.find();
 
-    res.json(teams);
+      if (teams.length === 0) throw new httpError('Teams not found', 404);
+      
+      return res.json(teams);
+    }
+  
+    const teams = await Team.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    return res.json(teams);
 }
 
 async function leaveTeam(req, res) {
@@ -119,9 +131,9 @@ async function leaveTeam(req, res) {
 
         const team = await Team.findById(participant.team._id);
 
-        const cyclist = await Cyclist.findOne({ participant: req.participant });
+        const mechanic = await Mechanic.findOne({ participant: req.participant });
 
-        const index = team.cyclists.indexOf(cyclist._id);
+        const index = team.Mechanics.indexOf(Mechanic._id);
 
         team.mechanic.splice(index, 1);
 
@@ -139,11 +151,11 @@ async function leaveTeam(req, res) {
 
         const team = await Team.findById(participant.team._id);
 
-        const cyclist = await Cyclist.findOne({ participant: req.participant });
+        const medical = await Medical.findOne({ participant: req.participant });
 
-        const index = team.cyclists.indexOf(cyclist._id);
+        const index = team.medicals.indexOf(medical._id);
 
-        team.mechanic.splice(index, 1);
+        team.medical.splice(index, 1);
 
         const currentTeam = await team.save();
 
@@ -162,15 +174,15 @@ async function deleteTeam(req, res) {
 
     if (team === null || team === undefined) throw new httpError('Team not found', 404);
     
-    await team.deleteOne({ _id: team._id });
-
+    await Team.deleteOne({ _id: team._id });
+    console.log(req.participant);
     const participant = await Participant.findById(req.participant);
-
-    participant.teamId = '';
+    console.log(participant);
+    // participant.teamId = '';
 
     await participant.save();
 
-    return res.json(team);
+    return res.json({ message: `${team.name} deleted successfully`});
 }
 
 module.exports = { 

@@ -1,0 +1,277 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: vespr
+  description: The TourDeDigitalSystems backend
+  termsOfService: terms
+host: 'localhost:3000'
+basePath: /tour-de-piraeus
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+components:
+  schemas:
+    Team:
+      type: object
+      properties:
+        name:
+          type: string
+        motto:
+          type: string
+        teamLeader:
+          type: string
+          unique: true
+        cyclists: 
+          type: array
+          items:
+            type: object
+        medicals: 
+          type: array
+          items:
+            type: object
+        mechanics: 
+          type: array
+          items:
+            type: object
+    Mechanic:
+      type: object
+      properties:
+        participant:
+          type: object
+        workingField:
+          type: string
+        vehicle:
+          type: string
+    Medical:
+      type: object
+      properties:
+        participant:
+          type: object
+        speciality:
+          type: string
+        vehicle:
+          type: string
+    PersonalInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        age:
+          type: string
+        idNumber:
+          type: string
+        allergies:
+          type: string
+    Participant:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        teamId:
+          type: object
+          items:
+            $ref: '#/components/schemas/Team'
+        role:
+          type: string
+    JwtAuth:
+      type: object
+      properties:
+        userId:
+          type: string
+        token:
+          type: string
+paths:
+  /register:
+    post:
+      description: Register a new participant
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - username
+              - password
+              - email
+            properties:
+              username:
+                type: string
+              password:
+                type: number
+              email:
+                type: string
+      responses:
+        '200':
+          description: The participant saved in the database as object
+          schema:
+            $ref: '#/components/schemas/Participant'
+        '400':
+          description: Username,password or email not specified
+        '409':
+          description: Returns message 'Already registered with this email'
+  /login:
+    post:
+      description: Login participant in order to start tour in api
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: number
+      responses:
+        '200':
+          description: Returns a message 'success' and a JWT token
+          schema:
+            $ref: '#/components/schemas/JwtAuth'
+        '401':
+          description: Returns message 'Participant not found'
+  /logout:
+    post:
+      description: Logout
+      responses:
+        '200':
+          description: Logout successfully
+        '401':
+          description: Unauthorized
+  /participant:
+    get:
+      description: Get your participant's profile
+      responses:
+        '200':
+          description: Get your participant as object
+          schema:
+            $ref: '#/components/schemas/Participant'
+    put:
+      description: Edit your credentials as participant
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - username
+              - password
+              - email
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: number
+      description:
+      responses:
+        '200':
+          description:
+          schema:
+            $ref: '#/components/schemas/Participant'
+    delete:
+      description: Delete your participant
+      responses:
+        '200':
+          description: Returns message 'Your event participation was deleted!'
+          schema:
+            $ref: '#/components/schemas/Participant'
+  /personal:
+    post:
+      description:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - age
+              - idNumber
+              - allergies
+            properties:
+              name:
+                type: string
+              surname:
+                type: string
+              age:
+                type: number
+              idNumber:
+                type: number
+              allergies:
+                type: string
+      responses:
+        '200':
+          description: Returns personal info as object
+          schema:
+            $ref: '#/components/schemas/PersonalInfo'
+        '404':
+          description: Returns message 'Participant not found'
+    get:
+      description: Get your personal info as object
+      responses:
+        '200':
+          description: Returns personal info as object
+        '404':
+          description: Returns message 'Participant not found'
+    put:
+      description: Edit your personal info
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - age
+              - idNumber
+              - allergies
+            properties:
+              name:
+                type: string
+              surname:
+                type: string
+              age:
+                type: number
+              idNumber:
+                type: number
+              allergies:
+                type: string
+      responses:
+        '200':
+          description: Returns personal info as object
+    delete:
+    description: Delete your personal info
+      responses:
+        '200':
+          description: Returns personal info as object
+
+
+
+
+            
+
+
+
+    
+      
+        
+          
+        
+
+          
+          

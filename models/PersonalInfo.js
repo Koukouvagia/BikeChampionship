@@ -14,7 +14,8 @@ const PersonalInfo = new Schema({
         type: String,
         required: true
     },
-    idNumber: String
+    idNumber: String,
+    allergies: String
 },
 {
     timestamps: true

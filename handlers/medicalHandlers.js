@@ -6,7 +6,6 @@ const Team = require('../models/Team.model');
 
 async function postMedical(req, res) {
     const { speciality, vehicle } = req.body;    
-    
 
     if (speciality === null || speciality === undefined) throw new httpError('Speciality not specified', 400);
 
@@ -32,12 +31,20 @@ async function postMedical(req, res) {
 }
 
 async function getMedicals(req, res) {
-    const medicals = await Medical.find();
+    const {page} = req.query;
+  
+    const PAGE_RESULTS = 20;
+  
+    if (page === null || page === undefined) {
+      const medicals = await Medical.find();
 
-    if (medicals.length === 0)
-        throw new httpError('Mechanics not found', 404);
-
-    res.json(medicals);
+      if (medicals.length === 0) throw new httpError('Cyclists not found', 404);
+      
+      return res.json(medicals);
+    }
+  
+    const medicals = await Medical.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    return res.json(medicals);
 }
 
 async function getMedicalById(req, res) {
@@ -48,14 +55,14 @@ async function getMedicalById(req, res) {
     if (medical === null || medical === undefined)
         throw new httpError('Medical not found', 404);
 
-    res.json(medical);
+    return res.json(medical);
 }
 
 async function putMedical(req, res) {
 
     const mech = await Medical.findOne({ participant: req.participant });
 
-    if (mech === null || mech === undefined) throw new httpError('You are not in Mechanics', 404);
+    if (mech === null || mech === undefined) throw new httpError('You are not in Medicals', 404);
     const fields = [
         'speciality',
         'vehicle'
@@ -96,6 +103,7 @@ async function deleteMedical(req, res) {
 
 module.exports = {
     postMedical,
+    putMedical,
     getMedicalById,
     getMedicals,
     deleteMedical

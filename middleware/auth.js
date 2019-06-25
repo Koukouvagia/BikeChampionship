@@ -47,6 +47,7 @@ function jwtStrategy(req, jwt_payload, done) {
 function localStrategy(username, password, done) {
     Participant.findOne({$or: [{email: username}, {username: username}]})
         .then(participant => {
+            console.log(participant)
             if (!participant) {
                 done(null, false, {message: 'Invalid credentials'});
                 return;
@@ -71,6 +72,7 @@ function login(req, res, next) {
             next(new httpError('Login failed', 401));
         }
         else if (!participant) {
+            console.log(participant);
             next(new httpError('Participant not found', 401));
         } else {
             const token = jwt.sign({'id': participant._id}, process.env.TOKEN_SECRET, {

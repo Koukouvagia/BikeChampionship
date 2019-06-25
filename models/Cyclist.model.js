@@ -8,7 +8,7 @@ const CyclistSchema = new Schema({
     },
     shirtNumber: { 
         type: Number,
-        require: true
+        required: true
     },
     style: {
         type: String,
