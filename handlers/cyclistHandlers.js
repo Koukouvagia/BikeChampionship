@@ -17,7 +17,7 @@ async function postCyclist(req, res) {
 
     const cyclist = await Cyclist.findOne({ participant: participant._id });
 
-    if (cyclist !== null && cyclist !== undefined) throw new httpError('Cyclist already exists');
+    if (cyclist !== null && cyclist !== undefined) throw new httpError('Cyclist already exists', 409);
 
     const response = await Cyclist.create({ participant, shirtNumber, style });
 
@@ -44,6 +44,15 @@ async function getCyclists(req, res) {
     return res.json(cyclists);
 }
 
+async function getCyclist(req, res) {
+
+    const cyclist = await Cyclist.findOne({ participant: req.participant });
+
+    if (cyclist === null || cyclist === undefined)
+        throw new httpError('Cyclist not found', 404);
+
+    return res.json(cyclist);
+}
 
 async function getCyclistById(req, res) {
     const { cyclistId } = req.params;
@@ -101,6 +110,7 @@ async function deleteCyclist(req, res) {
 
 module.exports = {
     postCyclist,
+    getCyclist,
     getCyclistById,
     getCyclists,
     putCyclist,

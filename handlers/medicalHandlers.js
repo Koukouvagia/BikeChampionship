@@ -58,6 +58,16 @@ async function getMedicalById(req, res) {
     return res.json(medical);
 }
 
+async function getMedical(req, res) {
+
+    const medical = await Medical.findOne({ participant: req.participant });
+
+    if (medical === null || medical === undefined)
+        throw new httpError('Medical not found', 404);
+
+    return res.json(medical);
+}
+
 async function putMedical(req, res) {
 
     const mech = await Medical.findOne({ participant: req.participant });
@@ -104,6 +114,7 @@ async function deleteMedical(req, res) {
 module.exports = {
     postMedical,
     putMedical,
+    getMedical,
     getMedicalById,
     getMedicals,
     deleteMedical

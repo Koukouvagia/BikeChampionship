@@ -1,11 +1,11 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: vespr
-  description: The TourDeDigitalSystems backend
+  title: TourDeDigitalSystems
+  description: The Backend of Bike Championship Api
   termsOfService: terms
 host: 'localhost:3000'
-basePath: /tour-de-piraeus
+basePath: /tour-de-degree
 schemes:
   - http
 consumes:
@@ -43,6 +43,9 @@ components:
           type: object
         workingField:
           type: string
+          enum:
+            - runtime
+            - backteam
         vehicle:
           type: string
     Medical:
@@ -52,6 +55,9 @@ components:
           type: object
         speciality:
           type: string
+          enum:
+            - emergency
+            - physiotherapist
         vehicle:
           type: string
     PersonalInfo:
@@ -88,6 +94,15 @@ components:
         userId:
           type: string
         token:
+          type: string
+    Cyclist:
+      type: object
+      properties:
+        participant:
+          type: object
+        shirtNumber:
+          type: string
+        style:
           type: string
 paths:
   /register:
@@ -151,14 +166,14 @@ paths:
           description: Unauthorized
   /participant:
     get:
-      description: Get your participant's profile
+      description: Get current participant's profile
       responses:
         '200':
           description: Get your participant as object
           schema:
             $ref: '#/components/schemas/Participant'
     put:
-      description: Edit your credentials as participant
+      description: Edit current participant's credentials
       parameters:
         - in: body
           name: body
@@ -182,7 +197,7 @@ paths:
           schema:
             $ref: '#/components/schemas/Participant'
     delete:
-      description: Delete your participant
+      description: Delete current participant
       responses:
         '200':
           description: Returns message 'Your event participation was deleted!'
@@ -190,7 +205,7 @@ paths:
             $ref: '#/components/schemas/Participant'
   /personal:
     post:
-      description:
+      description: Post personal info 
       parameters:
         - in: body
           name: body
@@ -221,14 +236,16 @@ paths:
         '404':
           description: Returns message 'Participant not found'
     get:
-      description: Get your personal info as object
+      description: Get current participant's personal info as object
       responses:
         '200':
           description: Returns personal info as object
+          schema:
+            $ref: '#/components/schemas/PersonalInfo'
         '404':
           description: Returns message 'Participant not found'
     put:
-      description: Edit your personal info
+      description: Edit current participant's personal info
       parameters:
         - in: body
           name: body
@@ -254,11 +271,404 @@ paths:
       responses:
         '200':
           description: Returns personal info as object
+          schema:
+            $ref: '#/components/schemas/PersonalInfo'
     delete:
-    description: Delete your personal info
+      description: Delete current participant's personal info
       responses:
         '200':
-          description: Returns personal info as object
+          description: Returns message 'Personal info deleted'
+  /cyclist:
+    post:
+      description: Define current participant's role as cyclist
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - shirtNumber
+              - style
+            properties:
+              shirtNumber:
+                type: number
+              style:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as cyclist(object)
+          schema:
+            $ref: '#/components/schemas/Cyclist'
+        '400':
+          description: Returns message about some input not defined
+        '409':
+          description: Returns message 'Cyclist already exists'
+    get:
+      description: Get your current participant's role as cyclist
+      responses:
+        '200':
+          description: Returns cyclist as object
+          schema:
+            $ref: '#/components/schemas/Cyclist'
+    put:
+      description: Edit current cyclist attributes
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - shirtNumber
+              - style
+            properties:
+              shirtNumber:
+                type: number
+              style:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as cyclist(object)
+          schema:
+            $ref: '#/components/schemas/Cyclist'
+        '404':
+          description: Returns message 'You are not in Cyclists'
+    delete:
+      description: Delete your cyclist role as participant
+      responses:
+        '200':
+          description: Returns current participant with empty role
+          schema:
+            $ref: '#/components/schemas/Cyclist'
+  /cyclist/{cyclistId}:
+    get:
+      description: Get a cyclist by id
+      parameters:
+        - in: path
+          name: cyclistId
+          schema:
+            type: string
+          description: ID of selected cyclist to return (string)
+      responses:
+        '200':
+          description: Returns cyclist of ID (object)
+          schema:
+            $ref: '#/components/schemas/Cyclist'
+        '404':
+          description: Returns message 'Cyclist not found'
+  /cyclist/all:
+    get:
+      description: Returns all cyclists of database
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: object
+            required:
+              - page
+            properties:
+              page:
+                type: string
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Cyclist'
+        '404':
+          description: Returns message 'Cyclists not found'
+  /medical:
+    post:
+      description: Define current participant's role as medical
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - speciality
+              - vehicle
+            properties:
+              speciality:
+                type: string
+                enum:
+                  - emergency
+                  - physiotherapist
+              vehicle:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as medical(object)
+          schema:
+            $ref: '#/components/schemas/Medical'
+        '400':
+          description: Returns message about some input not defined
+        '409':
+          description: Returns message 'Medical already exists'
+    get:
+      description: Get your current participant's role as medical
+      responses:
+        '200':
+          description: Returns medical as object
+          schema:
+            $ref: '#/components/schemas/Medical'
+    put:
+      description: Edit current medical attributes
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - speciality
+              - vehicle
+            properties:
+              speciality:
+                type: string
+                enum:
+                  - emergency
+                  - physiotherapist
+              vehicle:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as medical(object)
+          schema:
+            $ref: '#/components/schemas/Medical'
+        '404':
+          description: Returns message 'You are not in Medicals'
+    delete:
+      description: Delete your medical role as participant
+      responses:
+        '200':
+          description: Returns current participant with empty role
+          schema:
+            $ref: '#/components/schemas/Medical'
+  /medical/{medicalId}:
+    get:
+      description: Get a medical by id
+      parameters:
+        - in: path
+          name: medicalId
+          schema:
+            type: string
+          description: ID of selected medical to return (string)
+      responses:
+        '200':
+          description: Returns medical of ID (object)
+          schema:
+            $ref: '#/components/schemas/Medical'
+        '404':
+          description: Returns message 'Medical not found'
+  /medical/all:
+    get:
+      description: Returns all medicals of database
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: object
+            required:
+              - page
+            properties:
+              page:
+                type: string
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Medical'
+        '404':
+          description: Returns message 'Medicals not found'
+  /mechanic:
+    post:
+      description: Define current participant's role as mechanic
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - workingField
+              - vehicle
+            properties:
+              workingField:
+                type: string
+                enum:
+                  - runtime
+                  - backteam
+              vehicle:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as mechanic(object)
+          schema:
+            $ref: '#/components/schemas/Mechanic'
+        '400':
+          description: Returns message about some input not defined
+        '409':
+          description: Returns message 'Mechanic already exists'
+    get:
+      description: Get your current participant's role as mechanic
+      responses:
+        '200':
+          description: Returns mechanic as object
+          schema:
+            $ref: '#/components/schemas/Mechanic'
+    put:
+      description: Edit current mechanic attributes
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - workingField
+              - vehicle
+            properties:
+              speciality:
+                type: string
+                enum:
+                  - runtime
+                  - backteam
+              vehicle:
+                type: string
+      responses:
+        '200':
+          description: Returns current participant's role as mechanic(object)
+          schema:
+            $ref: '#/components/schemas/Mechanic'
+        '404':
+          description: Returns message 'You are not in Mechanics'
+    delete:
+      description: Delete your mechanic role as participant
+      responses:
+        '200':
+          description: Returns current participant with empty role
+          schema:
+            $ref: '#/components/schemas/Mechanic'
+  /mechanic/{mechanicId}:
+    get:
+      description: Get a mechanic by id
+      parameters:
+        - in: path
+          name: mechanicId
+          schema:
+            type: string
+          description: ID of selected mechanic to return (string)
+      responses:
+        '200':
+          description: Returns mechanic of ID (object)
+          schema:
+            $ref: '#/components/schemas/Mechanic'
+        '404':
+          description: Returns message 'Mechanic not found'
+  /mechanic/all:
+    get:
+      description: Returns all mechanics of database
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: object
+            required:
+              - page
+            properties:
+              page:
+                type: string
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Mechanic'
+        '404':
+          description: Returns message 'Mechanics not found'
+  /team:
+    post:
+      description: Create new team
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+            required:
+              - teamName
+              - motto
+            properties:
+              teamName:
+                type: string
+              motto:
+                type: string
+      responses:
+        '202':
+          description: Returns created team (object)
+          schema:
+            $ref: '#/components/schemas/Team'
+        '400':
+          description: Returns message 'Name is required'
+        '409':
+          description: Returns message 'Team already exists'
+    get:
+      description: Get all teams
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: object
+            required:
+              - page
+            properties:
+              page:
+                type: string
+      responses:
+        '200':
+          description: Returns all teams (object)
+        '404':
+          description: Returns message 'Team not found'
+  /team/join/{teamId}:
+    put:
+      description: Join in a team by Id
+      parameters:
+        - in: path
+          name: teamId
+          schema:
+            type: object
+            required:
+              - teamId
+            properties:
+              page:
+                type: string
+      responses:
+        '200':
+          description: Returns team joined (object)
+        '400':
+          description: Returns message 'already a member'
+        '404':
+          description: Returns message if team not found or participant's role not exists
+  /team/{teamId}:
+    delete:
+      description: Delete a team by id
+      parameters:
+        - in: path
+          name: teamId
+          schema:
+            type: object
+            required:
+              - teamId
+            properties:
+              teamId:
+                type: string
+      responses:
+        '200':
+          description: Returns success deleted team message
+        '404':
+          description: Returns message team not found
+  
+  
 
 
 

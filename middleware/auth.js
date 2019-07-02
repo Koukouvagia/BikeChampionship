@@ -9,6 +9,9 @@ const JwtAuth = require('../models/JwtAuth');
 const jwtOptions = {};
 jwtOptions.jwtFromRequest = req => {
     const { authorization } = req.headers;
+    if (authorization === null || authorization === undefined)
+        throw new httpError('No token provided', 401);
+
     const jwt = authorization.split(' ')[1];
     return jwt;
 }
@@ -26,13 +29,13 @@ function jwtStrategy(req, jwt_payload, done) {
     }
 
     JwtAuth.findOne({ token })
-        .then(admin => {
-            if (admin) {
+        .then(participant => {
+            if (participant) {
                 return Participant.findOne({'_id': jwt_payload.id})
                     .then(participant => {
                         if (participant) {
                             req.participant = participant._id.toString();
-                            done(null, admin);
+                            done(null, participant);
                         } else {
                             done(null, false);
                         }
@@ -47,7 +50,6 @@ function jwtStrategy(req, jwt_payload, done) {
 function localStrategy(username, password, done) {
     Participant.findOne({$or: [{email: username}, {username: username}]})
         .then(participant => {
-            console.log(participant)
             if (!participant) {
                 done(null, false, {message: 'Invalid credentials'});
                 return;
@@ -89,7 +91,6 @@ function login(req, res, next) {
 function logout(req, res, next) {
     Participant.findById(req.participant)
         .then(user => {
-            console.log(req.participant);
             if (!user) {
                 next(new httpError('Logout failed', 404));
             }
@@ -102,7 +103,7 @@ function logout(req, res, next) {
 }
 
 passport.use(new JwtStrategy(jwtOptions, jwtStrategy));
-passport.use(new LocalStrategy(localStrategy));
+passport.use(new LocalStrategy({usernameField: 'email'}, localStrategy));
 
 module.exports.login = login;
 module.exports.logout = logout;

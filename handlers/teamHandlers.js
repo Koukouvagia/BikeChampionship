@@ -10,7 +10,7 @@ async function createTeam(req, res) {
 
     const team = await Team.findOne({ name: teamName });
 
-    if (team !== null && team !== undefined) throw new httpError('Team already exists with this fullname', 400);
+    if (team !== null && team !== undefined) throw new httpError('Team already exists', 409);
 
     if (teamName === null || teamName === undefined) throw new httpError('Name is required', 400);
 
@@ -38,7 +38,7 @@ async function joinTeam(req, res) {
 
         const index = team.cyclists.findIndex(cycl => cycl === cyclist._id );
 
-        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`);
+        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`, 400);
         team.cyclists.push(cyclist);
 
         await team.save();
@@ -54,7 +54,7 @@ async function joinTeam(req, res) {
 
         const index = team.cyclists.findIndex(cycl => cycl === medical._id );
 
-        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`);
+        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`, 400);
 
         team.medicals.push(medical);
         
@@ -71,7 +71,7 @@ async function joinTeam(req, res) {
 
         const index = team.cyclists.findIndex(cycl => cycl === mechanic._id );
 
-        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`);
+        if (index !== -1) throw new httpError(`Already member in '${ team.name }' team`, 400);
 
         team.mechanics.push(mechanic);
         
@@ -175,9 +175,9 @@ async function deleteTeam(req, res) {
     if (team === null || team === undefined) throw new httpError('Team not found', 404);
     
     await Team.deleteOne({ _id: team._id });
-    console.log(req.participant);
+
     const participant = await Participant.findById(req.participant);
-    console.log(participant);
+
     // participant.teamId = '';
 
     await participant.save();

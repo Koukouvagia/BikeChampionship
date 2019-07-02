@@ -45,10 +45,20 @@ async function getMechanics(req, res) {
     return res.json(mechanics);
 }
 
-async function getMechanicById(req, res) {
-    const { mechanicId } = req.params;
+async function getMechanic(req, res) {
 
-    const mechanic = await Mechanic.findById(mechanicId);
+    const mechanic = await Mechanic.findOne({ participant: req.participant });
+
+    if (mechanic === null || mechanic === undefined)
+        throw new httpError('Mechanic not found', 404);
+
+    return res.json(mechanic);
+}
+
+async function getMechanicById(req, res) {
+    const { mechanic: id } = req.params;
+
+    const mechanic = await Mechanic.findById(id);
 
     if (mechanic === null || mechanic === undefined)
         throw new httpError('Mechanic not found', 404);
@@ -102,6 +112,7 @@ async function deleteMechanic(req, res) {
 module.exports = {
     postMechanic,
     getMechanicById,
+    getMechanic,
     getMechanics,
     putMechanic,
     deleteMechanic
