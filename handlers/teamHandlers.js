@@ -77,7 +77,7 @@ async function joinTeam(req, res) {
         
         await team.save();
 
-        participant.teamId = teamId;
+        participant.teamId = teamId.toString();
 
         await participant.save();
 

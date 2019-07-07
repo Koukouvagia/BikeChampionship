@@ -1,0 +1,397 @@
+1 {
+    2   "definitions": {},
+    3   "$schema": "http://json-schema.org/draft-07/schema#",
+    4   "$id": "http://example.com/root.json",
+    5   "type": "object",
+    6   "title": "The Root Schema",
+    7   "required": [
+    8     "_id",
+    9     "name",
+   10     "motto",
+   11     "teamLeader",
+   12     "cyclists",
+   13     "medicals",
+   14     "mechanics"
+   15   ],
+   16   "properties": {
+   17     "_id": {
+   18       "$id": "#/properties/_id",
+   19       "type": "string",
+   20       "title": "The _id Schema",
+   21       "default": "",
+   22       "examples": [
+   23         "5d1104ec4f4f9bd47d09c1c2"
+   24       ],
+   25       "pattern": "^(.*)$"
+   26     },
+   27     "name": {
+   28       "$id": "#/properties/name",
+   29       "type": "string",
+   30       "title": "The Name Schema",
+   31       "default": "",
+   32       "examples": [
+   33         "Red Bike Team"
+   34       ],
+   35       "pattern": "^(.*)$"
+   36     },
+   37     "motto": {
+   38       "$id": "#/properties/motto",
+   39       "type": "string",
+   40       "title": "The Motto Schema",
+   41       "default": "",
+   42       "examples": [
+   43         "All for all"
+   44       ],
+   45       "pattern": "^(.*)$"
+   46     },
+   47     "teamLeader": {
+   48       "$id": "#/properties/teamLeader",
+   49       "type": "string",
+   50       "title": "The Teamleader Schema",
+   51       "default": "",
+   52       "examples": [
+   53         "Thanos ploumis"
+   54       ],
+   55       "pattern": "^(.*)$"
+   56     },
+   57     "cyclists": {
+   58       "$id": "#/properties/cyclists",
+   59       "type": "array",
+   60       "title": "The Cyclists Schema",
+   61       "items": {
+   62         "$id": "#/properties/cyclists/items",
+   63         "type": "object",
+   64         "title": "The Items Schema",
+   65         "required": [
+   66           "participant",
+   67           "shirtNumber",
+   68           "style"
+   69         ],
+   70         "properties": {
+   71           "participant": {
+   72             "$id": "#/properties/cyclists/items/properties/participant",
+   73             "type": "object",
+   74             "title": "The Participant Schema",
+   75             "required": [
+   76               "username",
+   77               "email",
+   78               "password",
+   79               "teamId",
+   80               "personalInfo",
+   81               "role"
+   82             ],
+   83             "properties": {
+   84               "username": {
+   85                 "$id": "#/properties/cyclists/items/properties/participant/properties/username",
+   86                 "type": "string",
+   87                 "title": "The Username Schema",
+   88                 "default": "",
+   89                 "examples": [
+   90                   "Thanos Ploumis"
+   91                 ],
+   92                 "pattern": "^(.*)$"
+   93               },
+   94               "email": {
+   95                 "$id": "#/properties/cyclists/items/properties/participant/properties/email",
+   96                 "type": "string",
+   97                 "title": "The Email Schema",
+   98                 "default": "",
+   99                 "examples": [
+  100                   "thanosploumis@gmail.com"
+  101                 ],
+  102                 "pattern": "^(.*)$"
+  103               },
+  104               "password": {
+  105                 "$id": "#/properties/cyclists/items/properties/participant/properties/password",
+  106                 "type": "string",
+  107                 "title": "The Password Schema",
+  108                 "default": "",
+  109                 "examples": [
+  110                   "$2b$13$JkMffVofiHtg6PVyHalotuEVWMetO4nKdObQfjZLQBA3FJhJyCYTS"
+  111                 ],
+  112                 "pattern": "^(.*)$"
+  113               },
+  114               "teamId": {
+  115                 "$id": "#/properties/cyclists/items/properties/participant/properties/teamId",
+  116                 "type": "string",
+  117                 "title": "The Teamid Schema",
+  118                 "default": "",
+  119                 "examples": [
+  120                   "5d1104ec4f4f9bd47d09c1c2"
+  121                 ],
+  122                 "pattern": "^(.*)$"
+  123               },
+  124               "personalInfo": {
+  125                 "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo",
+  126                 "type": "object",
+  127                 "title": "The Personalinfo Schema",
+  128                 "required": [
+  129                   "name",
+  130                   "surname",
+  131                   "age",
+  132                   "idNumber",
+  133                   "allergies"
+  134                 ],
+  135                 "properties": {
+  136                   "name": {
+  137                     "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo/properties/name",
+  138                     "type": "string",
+  139                     "title": "The Name Schema",
+  140                     "default": "",
+  141                     "examples": [
+  142                       "Thanos"
+  143                     ],
+  144                     "pattern": "^(.*)$"
+  145                   },
+  146                   "surname": {
+  147                     "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo/properties/surname",
+  148                     "type": "string",
+  149                     "title": "The Surname Schema",
+  150                     "default": "",
+  151                     "examples": [
+  152                       "Ploumis"
+  153                     ],
+  154                     "pattern": "^(.*)$"
+  155                   },
+  156                   "age": {
+  157                     "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo/properties/age",
+  158                     "type": "integer",
+  159                     "title": "The Age Schema",
+  160                     "default": 0,
+  161                     "examples": [
+  162                       25
+  163                     ]
+  164                   },
+  165                   "idNumber": {
+  166                     "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo/properties/idNumber",
+  167                     "type": "string",
+  168                     "title": "The Idnumber Schema",
+  169                     "default": "",
+  170                     "examples": [
+  171                       "341224E"
+  172                     ],
+  173                     "pattern": "^(.*)$"
+  174                   },
+  175                   "allergies": {
+  176                     "$id": "#/properties/cyclists/items/properties/participant/properties/personalInfo/properties/allergies",
+  177                     "type": "string",
+  178                     "title": "The Allergies Schema",
+  179                     "default": "",
+  180                     "examples": [
+  181                       "None"
+  182                     ],
+  183                     "pattern": "^(.*)$"
+  184                   }
+  185                 }
+  186               },
+  187               "role": {
+  188                 "$id": "#/properties/cyclists/items/properties/participant/properties/role",
+  189                 "type": "string",
+  190                 "title": "The Role Schema",
+  191                 "default": "",
+  192                 "examples": [
+  193                   "cyclist"
+  194                 ],
+  195                 "pattern": "^(.*)$"
+  196               }
+  197             }
+  198           },
+  199           "shirtNumber": {
+  200             "$id": "#/properties/cyclists/items/properties/shirtNumber",
+  201             "type": "integer",
+  202             "title": "The Shirtnumber Schema",
+  203             "default": 0,
+  204             "examples": [
+  205               23
+  206             ]
+  207           },
+  208           "style": {
+  209             "$id": "#/properties/cyclists/items/properties/style",
+  210             "type": "string",
+  211             "title": "The Style Schema",
+  212             "default": "",
+  213             "examples": [
+  214               "Sprinter"
+  215             ],
+  216             "pattern": "^(.*)$"
+  217           }
+  218         }
+  219       }
+  220     },
+  221     "medicals": {
+  222       "$id": "#/properties/medicals",
+  223       "type": "array",
+  224       "title": "The Medicals Schema",
+  225       "items": {
+  226         "$id": "#/properties/medicals/items",
+  227         "type": "object",
+  228         "title": "The Items Schema"
+  229       }
+  230     },
+  231     "mechanics": {
+  232       "$id": "#/properties/mechanics",
+  233       "type": "array",
+  234       "title": "The Mechanics Schema",
+  235       "items": {
+  236         "$id": "#/properties/mechanics/items",
+  237         "type": "object",
+  238         "title": "The Items Schema",
+  239         "required": [
+  240           "participant",
+  241           "workingField",
+  242           "vehicle"
+  243         ],
+  244         "properties": {
+  245           "participant": {
+  246             "$id": "#/properties/mechanics/items/properties/participant",
+  247             "type": "object",
+  248             "title": "The Participant Schema",
+  249             "required": [
+  250               "username",
+  251               "email",
+  252               "password",
+  253               "personalInfo",
+  254               "teamId",
+  255               "role"
+  256             ],
+  257             "properties": {
+  258               "username": {
+  259                 "$id": "#/properties/mechanics/items/properties/participant/properties/username",
+  260                 "type": "string",
+  261                 "title": "The Username Schema",
+  262                 "default": "",
+  263                 "examples": [
+  264                   "Dimitris"
+  265                 ],
+  266                 "pattern": "^(.*)$"
+  267               },
+  268               "email": {
+  269                 "$id": "#/properties/mechanics/items/properties/participant/properties/email",
+  270                 "type": "string",
+  271                 "title": "The Email Schema",
+  272                 "default": "",
+  273                 "examples": [
+  274                   "dimitris@gmail.com"
+  275                 ],
+  276                 "pattern": "^(.*)$"
+  277               },
+  278               "password": {
+  279                 "$id": "#/properties/mechanics/items/properties/participant/properties/password",
+  280                 "type": "string",
+  281                 "title": "The Password Schema",
+  282                 "default": "",
+  283                 "examples": [
+  284                   "$35@#$%f32fVofiHtg6PVyHalotuEVWMetO4nKdObQfjZLQBA3FJhJyCYTS"
+  285                 ],
+  286                 "pattern": "^(.*)$"
+  287               },
+  288               "personalInfo": {
+  289                 "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo",
+  290                 "type": "object",
+  291                 "title": "The Personalinfo Schema",
+  292                 "required": [
+  293                   "name",
+  294                   "surname",
+  295                   "age",
+  296                   "idNumber",
+  297                   "allergies"
+  298                 ],
+  299                 "properties": {
+  300                   "name": {
+  301                     "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo/properties/name",
+  302                     "type": "string",
+  303                     "title": "The Name Schema",
+  304                     "default": "",
+  305                     "examples": [
+  306                       "Dimitris"
+  307                     ],
+  308                     "pattern": "^(.*)$"
+  309                   },
+  310                   "surname": {
+  311                     "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo/properties/surname",
+  312                     "type": "string",
+  313                     "title": "The Surname Schema",
+  314                     "default": "",
+  315                     "examples": [
+  316                       "Papas"
+  317                     ],
+  318                     "pattern": "^(.*)$"
+  319                   },
+  320                   "age": {
+  321                     "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo/properties/age",
+  322                     "type": "integer",
+  323                     "title": "The Age Schema",
+  324                     "default": 0,
+  325                     "examples": [
+  326                       27
+  327                     ]
+  328                   },
+  329                   "idNumber": {
+  330                     "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo/properties/idNumber",
+  331                     "type": "string",
+  332                     "title": "The Idnumber Schema",
+  333                     "default": "",
+  334                     "examples": [
+  335                       "341224E"
+  336                     ],
+  337                     "pattern": "^(.*)$"
+  338                   },
+  339                   "allergies": {
+  340                     "$id": "#/properties/mechanics/items/properties/participant/properties/personalInfo/properties/allergies",
+  341                     "type": "string",
+  342                     "title": "The Allergies Schema",
+  343                     "default": "",
+  344                     "examples": [
+  345                       "None"
+  346                     ],
+  347                     "pattern": "^(.*)$"
+  348                   }
+  349                 }
+  350               },
+  351               "teamId": {
+  352                 "$id": "#/properties/mechanics/items/properties/participant/properties/teamId",
+  353                 "type": "string",
+  354                 "title": "The Teamid Schema",
+  355                 "default": "",
+  356                 "examples": [
+  357                   "5d1104ec4f4f9bd47d09c1c2"
+  358                 ],
+  359                 "pattern": "^(.*)$"
+  360               },
+  361               "role": {
+  362                 "$id": "#/properties/mechanics/items/properties/participant/properties/role",
+  363                 "type": "string",
+  364                 "title": "The Role Schema",
+  365                 "default": "",
+  366                 "examples": [
+  367                   "cyclist"
+  368                 ],
+  369                 "pattern": "^(.*)$"
+  370               }
+  371             }
+  372           },
+  373           "workingField": {
+  374             "$id": "#/properties/mechanics/items/properties/workingField",
+  375             "type": "string",
+  376             "title": "The Workingfield Schema",
+  377             "default": "",
+  378             "examples": [
+  379               "runtime"
+  380             ],
+  381             "pattern": "^(.*)$"
+  382           },
+  383           "vehicle": {
+  384             "$id": "#/properties/mechanics/items/properties/vehicle",
+  385             "type": "string",
+  386             "title": "The Vehicle Schema",
+  387             "default": "",
+  388             "examples": [
+  389               "bike"
+  390             ],
+  391             "pattern": "^(.*)$"
+  392           }
+  393         }
+  394       }
+  395     }
+  396   }
+  397 }

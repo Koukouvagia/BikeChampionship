@@ -13,7 +13,7 @@ const MechanicSchema = new Schema({
         enum: ['runtime', 'backteam'],
         required: true
     },
-    vehicle: String
+    vehicle: Boolean
 },
 {
     timestamps: true

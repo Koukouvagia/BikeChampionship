@@ -17,7 +17,8 @@ const ParticipantSchema = new Schema({
         type: String,
         required: true
     },
-    teamId: { type: Schema.Types.ObjectId, ref: 'Team' },
+    personalInfo: { type: Schema.Types.ObjectId, ref: 'PersonalInfo' },
+    teamId: String,
     role: {
         type: String,
         enum: ['cyclist', 'medical', 'mechanic']
