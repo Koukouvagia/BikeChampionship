@@ -40,15 +40,17 @@ async function getParticipants(req, res) {
   
     const PAGE_RESULTS = 20;
   
+    const query = Participant.find().sort({createdAt: -1});
+
     if (page === null || page === undefined) {
-      const participants = await Participant.find();
+      const participants = await query;
 
       if (participants.length === 0) throw new httpError('Participants not found', 404);
 
       return res.json(participants);
     }
   
-    const participants = await Participant.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    const participants = await query.skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
     return res.json(participants);
 }
 

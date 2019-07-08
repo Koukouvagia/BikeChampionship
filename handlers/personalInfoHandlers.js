@@ -26,9 +26,8 @@ async function getPersonal(req, res) {
 }
 
 async function putPersonal(req, res) {
-    const { name, surname, age, idNumber, allergies } = req.body;
-
     const { updates } = req.body;
+    
     let personal = await PersonalInfo.findOne({ participant: req.participant });
 
     for (const key in updates) {

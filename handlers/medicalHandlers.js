@@ -35,15 +35,16 @@ async function getMedicals(req, res) {
   
     const PAGE_RESULTS = 20;
   
+    const query = Medical.find().sort({createdAt: -1});
     if (page === null || page === undefined) {
-      const medicals = await Medical.find();
+      const medicals = await query;
 
       if (medicals.length === 0) throw new httpError('Cyclists not found', 404);
       
       return res.json(medicals);
     }
   
-    const medicals = await Medical.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
+    const medicals = await query.skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
     return res.json(medicals);
 }
 

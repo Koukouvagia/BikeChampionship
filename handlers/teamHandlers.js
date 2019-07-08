@@ -16,7 +16,7 @@ async function createTeam(req, res) {
 
     const participant = await Participant.findById(req.participant);
 
-    const newTeam = await Team.create({ name: teamName, motto, teamLeader: participant.fullname });
+    const newTeam = await Team.create({ name: teamName, motto, teamLeader: participant.username });
 
     res.json(newTeam);
 }
@@ -133,7 +133,7 @@ async function leaveTeam(req, res) {
 
         const mechanic = await Mechanic.findOne({ participant: req.participant });
 
-        const index = team.Mechanics.indexOf(Mechanic._id);
+        const index = team.mechanics.indexOf(mechanic._id);
 
         team.mechanic.splice(index, 1);
 
@@ -174,15 +174,19 @@ async function deleteTeam(req, res) {
 
     if (team === null || team === undefined) throw new httpError('Team not found', 404);
     
-    await Team.deleteOne({ _id: team._id });
-
     const participant = await Participant.findById(req.participant);
 
-    // participant.teamId = '';
+    if (participant.username === team.teamLeader) {
+        await Team.deleteOne({ _id: team._id });
 
-    await participant.save();
+        participant.teamId = '';
 
-    return res.json({ message: `${team.name} deleted successfully`});
+        await participant.save();
+    
+        return res.json({ message: `${team.name} deleted successfully`});
+    }
+    
+    return res.json({ message: `You are not team leader of ${team.name}! `})
 }
 
 module.exports = { 
