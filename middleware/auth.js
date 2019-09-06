@@ -2,11 +2,14 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
-const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 const Participant = require('../models/Participant.model');
 const JwtAuth = require('../models/JwtAuth');
 const jwtOptions = {};
+
+/* --- Authorization Headers on request
+If null return special message --- */
+
 jwtOptions.jwtFromRequest = req => {
     const { authorization } = req.headers;
     if (authorization === null || authorization === undefined)
@@ -22,11 +25,15 @@ const httpError = require('../utils/httpError');
 function jwtStrategy(req, jwt_payload, done) {
     const header = req.headers.authorization;
     let token;
-
+    
+    // Grab header split it by spaces and keep second segment with the JWT token
     if (header !== undefined) {
         const bearer = header.split(' ');
         token = bearer[1];
     }
+
+    /* Search in db, in JwtAuth collection if someone has been register with this token 
+        and who participant this is */
 
     JwtAuth.findOne({ token })
         .then(participant => {
@@ -47,6 +54,7 @@ function jwtStrategy(req, jwt_payload, done) {
         .catch(done);
 }
 
+// Search in db, in Participant collection, the participant with the specific username and password fields
 function localStrategy(username, password, done) {
     Participant.findOne({$or: [{email: username}, {username: username}]})
         .then(participant => {
@@ -67,6 +75,7 @@ function localStrategy(username, password, done) {
     });
 }
 
+// If there is participant with the specific fields login is successfull , otherwise there is error or he is signed up and created right now
 
 function login(req, res, next) {
     passport.authenticate('local', (err, participant) => {
@@ -87,6 +96,9 @@ function login(req, res, next) {
     })(req, res, next);
     `1`
 }
+
+/*-- Logout function searches in db and Participant collection, the participant using his _id and when find him it delete his jwtauthorization document.
+    If participant wants to make some request he needs to login again so new JwtAuth doc will be created */
 
 function logout(req, res, next) {
     Participant.findById(req.participant)

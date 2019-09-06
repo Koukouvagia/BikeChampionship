@@ -14,6 +14,7 @@ const options = {
     bufferMaxEntries: 0
 };
 
+// Database connection establishing below
 const connectionRestart = () => {
     mongoose.connect('mongodb://localhost:27017', options)
         .then(() => {

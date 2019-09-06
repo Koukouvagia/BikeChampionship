@@ -3,6 +3,8 @@ const Participant = require('../models/Participant.model');
 const Mechanic = require('../models/Mechanic.model');
 const Team = require('../models/Team.model');
 
+// Create a new participant mechanic 
+
 async function postMechanic(req, res) {
     const { workingField, vehicle } = req.body;    
 
@@ -28,6 +30,8 @@ async function postMechanic(req, res) {
     return res.json(response);
 }
 
+// Get all participants mechanics
+
 async function getMechanics(req, res) {
     const {page} = req.query;
   
@@ -47,6 +51,8 @@ async function getMechanics(req, res) {
     return res.json(mechanics);
 }
 
+// Get current participant mechanic who is sending the request
+
 async function getMechanic(req, res) {
 
     const mechanic = await Mechanic.findOne({ participant: req.participant });
@@ -56,6 +62,8 @@ async function getMechanic(req, res) {
 
     return res.json(mechanic);
 }
+
+// Get a specific participant mechanic by ID
 
 async function getMechanicById(req, res) {
     const { mechanic: id } = req.params;
@@ -67,6 +75,8 @@ async function getMechanicById(req, res) {
 
     return res.json(mechanic);
 }
+
+// Put/Request changes for current participant mechanic
 
 async function putMechanic(req, res) {
 
@@ -89,6 +99,8 @@ async function putMechanic(req, res) {
     return res.json(response);
 
 }
+
+// Delete current participant mechanic 
 
 async function deleteMechanic(req, res) {
 

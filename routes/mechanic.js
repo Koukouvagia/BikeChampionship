@@ -5,6 +5,8 @@ const handlers = require('../handlers/mechanicHandlers');
 
 const router = new Router();
 
+// CRUD operations of mechanic
+
 router.route('/all')
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getMechanics(req, res).catch(next));
 

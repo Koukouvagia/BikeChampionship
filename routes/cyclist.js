@@ -5,6 +5,8 @@ const handlers = require('../handlers/cyclistHandlers');
 
 const router = new Router();
 
+// CRUD operations of cyclist
+
 router.route('/all')
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getCyclists(req, res).catch(next))
 

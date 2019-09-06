@@ -4,6 +4,8 @@ const Cyclist = require('../models/Cyclist.model');
 const Medical = require('../models/Medical.model');
 const Mechanic = require('../models/Mechanic.model');
 
+// Create a new participant
+
 async function postParticipant(req, res) {
     const { username, password, email } = req.body;
 
@@ -28,12 +30,16 @@ async function postParticipant(req, res) {
     res.json(participant);
 }
 
+// Get current participant
+
 async function getYourParticipant(req, res) {
 
     const participant = await Participant.findById(req.participant);
 
     return res.json(participant);
 }
+
+// Get all participants
 
 async function getParticipants(req, res) {
     const {page} = req.query;
@@ -53,6 +59,8 @@ async function getParticipants(req, res) {
     const participants = await query.skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
     return res.json(participants);
 }
+
+// Put current participant
 
 async function putParticipant(req, res) {
 
@@ -76,6 +84,8 @@ async function putParticipant(req, res) {
 
     return res.json(response);
 }
+
+// Delete current participant
 
 async function deleteParticipant(req, res) {
     const participant = await Participant.findByIdAndDelete(req.participant);

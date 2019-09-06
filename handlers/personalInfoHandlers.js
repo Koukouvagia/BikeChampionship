@@ -2,6 +2,8 @@ const HttpError = require('../utils/httpError');
 const PersonalInfo = require('../models/PersonalInfo');
 const Participant = require('../models/Participant.model');
 
+// Create new personal info in current participant
+
 async function postPersonal(req, res) {
     const { name, surname, age, idNumber, allergies } = req.body;
 
@@ -13,8 +15,10 @@ async function postPersonal(req, res) {
 
     await participant.save();
     
-    res.json(personal);
+    return res.json(personal);
 }
+
+// Get current personal info 
 
 async function getPersonal(req, res) {
     const personal = await PersonalInfo.findOne({ participant: req.participant });
@@ -22,8 +26,10 @@ async function getPersonal(req, res) {
     if (personal === null || personal === undefined)
         throw new HttpError('Personal info not found', 404);
 
-    res.json(personal);
+    return res.json(personal);
 }
+
+// Put current participant personal info
 
 async function putPersonal(req, res) {
     const { updates } = req.body;
@@ -37,8 +43,10 @@ async function putPersonal(req, res) {
 
     personal = await personal.save();
 
-    res.json(personal);
+    return res.json(personal);
 }
+
+// Delete current participant personal info
 
 async function deletePersonal(req, res) {
     const participant = await Participant.findById(req.participant);
@@ -49,7 +57,7 @@ async function deletePersonal(req, res) {
 
     await participant.save();
     
-    res.json({ message: 'Personal info deleted'});
+    return res.json({ message: 'Personal info deleted'});
 }
 
 module.exports = {

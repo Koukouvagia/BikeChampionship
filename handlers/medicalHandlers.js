@@ -3,6 +3,7 @@ const Participant = require('../models/Participant.model');
 const Medical = require('../models/Medical.model');
 const Team = require('../models/Team.model');
 
+// Create a new medical participant
 
 async function postMedical(req, res) {
     const { speciality, vehicle } = req.body;    
@@ -30,6 +31,8 @@ async function postMedical(req, res) {
     return res.json(response);
 }
 
+// Get all medical participants
+
 async function getMedicals(req, res) {
     const {page} = req.query;
   
@@ -48,6 +51,7 @@ async function getMedicals(req, res) {
     return res.json(medicals);
 }
 
+// Get a specific medical participant by ID
 async function getMedicalById(req, res) {
     const { medicalId } = req.params;
 
@@ -59,6 +63,8 @@ async function getMedicalById(req, res) {
     return res.json(medical);
 }
 
+// Get current medical participant
+
 async function getMedical(req, res) {
 
     const medical = await Medical.findOne({ participant: req.participant });
@@ -68,6 +74,8 @@ async function getMedical(req, res) {
 
     return res.json(medical);
 }
+
+// Put current medical participant
 
 async function putMedical(req, res) {
 
@@ -90,6 +98,8 @@ async function putMedical(req, res) {
     return res.json(response);
 
 }
+
+// Delete current medical participant
 
 async function deleteMedical(req, res) {
 

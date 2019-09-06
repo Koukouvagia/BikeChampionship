@@ -11,6 +11,8 @@ const {
 
 const router = new Router();
 
+// CRUD operations of a team
+
 router.route('/')
     .post(passport.authenticate('jwt', {session: false}), (req, res, next) => createTeam(req, res).catch(next))
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => getTeams(req, res).catch(next));

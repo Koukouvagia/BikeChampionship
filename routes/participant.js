@@ -11,6 +11,8 @@ const {
 
 const router = new Router();
 
+// CRUD operations of a participant no matter his role
+
 router.route('/')
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => getYourParticipant(req, res).catch(next))
     .put(passport.authenticate('jwt', {session: false}), (req, res, next) => putParticipant(req, res).catch(next))

@@ -5,6 +5,8 @@ const handlers = require('../handlers/medicalHandlers');
 
 const router = new Router();
 
+// CRUD operations of medical
+
 router.route('/all')
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => handlers.getMedicals(req, res).catch(next))
 

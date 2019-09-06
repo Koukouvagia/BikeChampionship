@@ -3,6 +3,8 @@ const Participant = require('../models/Participant.model');
 const Cyclist = require('../models/Cyclist.model');
 const Team = require('../models/Team.model');
 
+// Create a new cyclist participant
+
 async function postCyclist(req, res) {
     const { shirtNumber, style } = req.body;    
     
@@ -27,6 +29,8 @@ async function postCyclist(req, res) {
     return res.json(response);
 }
 
+// Get all cyclists participants
+
 async function getCyclists(req, res) {
     const {page} = req.query;
   
@@ -44,6 +48,8 @@ async function getCyclists(req, res) {
     return res.json(cyclists);
 }
 
+// Get current cyclist participant who is making the request
+
 async function getCyclist(req, res) {
 
     const cyclist = await Cyclist.findOne({ participant: req.participant });
@@ -53,6 +59,8 @@ async function getCyclist(req, res) {
 
     return res.json(cyclist);
 }
+
+// Get a specific cyclist participant by ID
 
 async function getCyclistById(req, res) {
     const { cyclistId } = req.params;
@@ -64,6 +72,8 @@ async function getCyclistById(req, res) {
 
     return res.json(cyclist);
 }
+
+// Put/Request changes for current cyclist participant
 
 async function putCyclist(req, res) {
 
@@ -86,6 +96,8 @@ async function putCyclist(req, res) {
     return res.json(response);
 
 }
+
+// Delete current cyclist participant
 
 async function deleteCyclist(req, res) {
 

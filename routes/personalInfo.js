@@ -10,6 +10,8 @@ const {
 
 const router = new Router();
 
+// CRUD operations of a participant about his personal info
+
 router.route('/')
     .post(passport.authenticate('jwt', {session: false}), (req, res, next) => postPersonal(req, res).catch(next))
     .get(passport.authenticate('jwt', {session: false}), (req, res, next) => getPersonal(req, res).catch(next))

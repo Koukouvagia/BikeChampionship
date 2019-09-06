@@ -5,6 +5,9 @@ const Cyclist = require('../models/Cyclist.model');
 const Medical = require('../models/Medical.model');
 const Mechanic = require('../models/Mechanic.model');
 
+
+// Create new team
+
 async function createTeam(req, res) {
     const { teamName, motto } = req.body;
 
@@ -20,6 +23,8 @@ async function createTeam(req, res) {
 
     res.json(newTeam);
 }
+
+// Join in specific team 
 
 async function joinTeam(req, res) {
     const { teamId } = req.params;
@@ -85,6 +90,7 @@ async function joinTeam(req, res) {
     }
 }
 
+// Get all teams
 
 async function getTeams(req, res) {
     const {page} = req.query;
@@ -102,6 +108,8 @@ async function getTeams(req, res) {
     const teams = await Team.find().sort({createdAt: -1}).skip(page * PAGE_RESULTS).limit(PAGE_RESULTS);
     return res.json(teams);
 }
+
+// Leave current team
 
 async function leaveTeam(req, res) {
 
@@ -166,6 +174,8 @@ async function leaveTeam(req, res) {
         return res.json(currentTeam);
     }
 }
+
+// Delete specific team if current participant is team leader
 
 async function deleteTeam(req, res) {
     const { teamId } = req.params;
