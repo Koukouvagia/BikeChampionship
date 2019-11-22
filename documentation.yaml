@@ -669,21 +669,3 @@ paths:
           description: Returns success deleted team message
         '404':
           description: Returns message team not found
-  
-  
-
-
-
-
-            
-
-
-
-    
-      
-        
-          
-        
-
-          
-          
