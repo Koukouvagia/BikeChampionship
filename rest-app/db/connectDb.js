@@ -11,12 +11,13 @@ const options = {
     reconnectInterval: 500, // Reconnect every 500ms
     poolSize: 10, // Maintain up to 10 socket connections
     // If not connected, return errors immediately rather than waiting for reconnect
-    bufferMaxEntries: 0
+    bufferMaxEntries: 0,
+    useUnifiedTopology: true
 };
 
 // Database connection establishing below
 const connectionRestart = () => {
-    mongoose.connect('mongodb://localhost:27017', options)
+    mongoose.connect('mongodb://mongodb:27017', options)
         .then(() => {
             console.log('MongoDb is connected!');
             let db = mongoose.connection;

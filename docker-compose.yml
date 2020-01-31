@@ -1,0 +1,14 @@
+version: '3'
+services:
+    mongodb:
+        image: mongo
+        container_name: mongo-database
+        ports:
+            - 27017:27017
+    node:
+        build: ./rest-app
+        container_name: bike-api
+        ports:
+            - 3000:3000
+        depends_on:
+            - mongodb
