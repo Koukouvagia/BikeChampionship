@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   version: 1.0.0
   title: TourDeDigitalSystems
-  description: The Backend of Bike Championship Api
+  description: The Backend of Bike Tournament Api
   termsOfService: terms
 host: 'localhost:3000'
 basePath: /tour-de-degree

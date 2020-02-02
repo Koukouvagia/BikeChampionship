@@ -6,7 +6,7 @@ const options = {
     connectTimeoutMS: 3000,
     promiseLibrary: require('bluebird'),
     useNewUrlParser: true,
-    dbName: 'BikeChampionship',
+    dbName: 'bike-tournament',
     reconnectTries: 30, // Retry up to 30 times
     reconnectInterval: 500, // Reconnect every 500ms
     poolSize: 10, // Maintain up to 10 socket connections
