@@ -8,14 +8,14 @@ const helmet = require('helmet');
 require('dotenv').config({ path: __dirname + '/.env' });
 
 // Routes
-const docs = require('./routes/documentation');
 const indexRouter = require('./routes/index');
 const teamRouter = require('./routes/team');
 const participantRouter = require('./routes/participant');
 const cyclistRouter = require('./routes/cyclist');
 const mechanicRouter = require('./routes/mechanic');
 const medicalRouter = require('./routes/medical');
-const personalRouter = require('./routes/personalInfo');
+const personalRouter = require('./routes/personInfo');
+const docs = require('./routes/documentation');
 
 const app = express();
 
@@ -29,17 +29,15 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // Routes
-const base = '/tour-de-degree';
-
+app.use('/', indexRouter);
+app.use('/participant', participantRouter);
+app.use('/team', teamRouter);
+app.use('/cyclist', cyclistRouter);
+app.use('/mechanic', mechanicRouter);
+app.use('/medical', medicalRouter);
+app.use('/personal', personalRouter);
 app.use('/api-docs', docs);
 
-app.use(base + '/', indexRouter);
-app.use(base + '/participant', participantRouter);
-app.use(base + '/team', teamRouter);
-app.use(base + '/cyclist', cyclistRouter);
-app.use(base + '/mechanic', mechanicRouter);
-app.use(base + '/medical', medicalRouter);
-app.use(base + '/personal', personalRouter);
 
 
 app.use((error, req, res, next) => {

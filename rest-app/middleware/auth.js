@@ -91,7 +91,7 @@ function login(req, res, next) {
             });
             JwtAuth.create({ userId: participant._id, token: token }).catch(error => console.log(error));
             const message = {success: true, token: token};
-            return res.status(200).json(message);// todo something went wrong here
+            return res.status(200).json(message);
         }
     })(req, res, next);
     `1`

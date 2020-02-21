@@ -4,6 +4,10 @@ const Cyclist = require('../models/Cyclist.model');
 const Medical = require('../models/Medical.model');
 const Mechanic = require('../models/Mechanic.model');
 
+// Assure app is working- sample get page
+const getIndex = (req, res) => {
+    res.send("Bike tournament is working");
+};
 // Create a new participant
 
 async function postParticipant(req, res) {
@@ -98,6 +102,7 @@ async function deleteParticipant(req, res) {
 }
 
 module.exports = {
+    getIndex,
     postParticipant,
     getYourParticipant,
     getParticipants,

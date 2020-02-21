@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PersonalInfo = new Schema({
+const personInfo = new Schema({
     name: {
         type: String,
         required: true
@@ -21,4 +21,4 @@ const PersonalInfo = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('PersonalInfo', PersonalInfo, 'PersonalInfos');
+module.exports = mongoose.model('personInfo', personInfo, 'personInfos');

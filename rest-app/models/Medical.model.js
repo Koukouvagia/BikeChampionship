@@ -13,7 +13,7 @@ const MedicalSchema = new Schema({
         enum: ['emergency', 'physiotherapist'],
         required: true
     },
-    vehicle: String
+    vehicle: String,
 },
 {
     timestamps: true

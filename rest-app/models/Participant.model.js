@@ -17,7 +17,7 @@ const ParticipantSchema = new Schema({
         type: String,
         required: true
     },
-    personalInfo: { type: Schema.Types.ObjectId, ref: 'PersonalInfo' },
+    personInfo: { type: Schema.Types.ObjectId, ref: 'personInfo' },
     teamId: String,
     role: {
         type: String,

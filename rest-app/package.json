@@ -1,7 +1,7 @@
 {
-  "name": "bikechampionship",
+  "name": "bike-tournament",
   "version": "1.0.0",
-  "description": "BikeChampionship repo is about an REST api service which handle not only the easy and secure registration but also managing and saving the data of many bike teams, cyclists, medicals and mechanics who will participate in this type of event.",
+  "description": "bike-tournament repo is about an REST api service which handle not only the easy and secure registration but also managing and saving the data of many bike teams, cyclists, medicals and mechanics who will participate in this type of event.",
   "main": "app.js",
   "dependencies": {
     "bcrypt": "^3.0.7",
@@ -27,15 +27,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Koukouvagia/BikeChampionship.git"
+    "url": "git+https://github.com/Koukouvagia/bike-tournament.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Koukouvagia/BikeChampionship/issues"
+    "url": "https://github.com/Koukouvagia/bike-tournament/issues"
   },
-  "homepage": "https://github.com/Koukouvagia/BikeChampionship#readme",
+  "homepage": "https://github.com/Koukouvagia/bike-tournament#readme",
   "bin": {
-    "bikechampionship": "server.js"
+    "bike-tournament": "server.js"
   }
 }

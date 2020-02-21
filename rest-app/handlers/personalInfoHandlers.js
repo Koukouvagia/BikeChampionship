@@ -1,5 +1,5 @@
 const HttpError = require('../utils/httpError');
-const PersonalInfo = require('../models/PersonalInfo');
+const personInfo = require('../models/personInfo');
 const Participant = require('../models/Participant.model');
 
 // Create new personal info in current participant
@@ -9,9 +9,9 @@ async function postPersonal(req, res) {
 
     const participant = await Participant.findById(req.participant);
 
-    const personal = await PersonalInfo.create({ participant: req.participant, name, surname, age, idNumber, allergies });
+    const personal = await personInfo.create({ participant: req.participant, name, surname, age, idNumber, allergies });
 
-    participant.personalInfo = personal;
+    participant.personInfo = personal;
 
     await participant.save();
     
@@ -21,7 +21,7 @@ async function postPersonal(req, res) {
 // Get current personal info 
 
 async function getPersonal(req, res) {
-    const personal = await PersonalInfo.findOne({ participant: req.participant });
+    const personal = await personInfo.findOne({ participant: req.participant });
 
     if (personal === null || personal === undefined)
         throw new HttpError('Personal info not found', 404);
@@ -34,7 +34,7 @@ async function getPersonal(req, res) {
 async function putPersonal(req, res) {
     const { updates } = req.body;
     
-    let personal = await PersonalInfo.findOne({ participant: req.participant });
+    let personal = await personInfo.findOne({ participant: req.participant });
 
     for (const key in updates) {
         if (!updates.hasOwnProperty(key)) continue;
@@ -51,9 +51,9 @@ async function putPersonal(req, res) {
 async function deletePersonal(req, res) {
     const participant = await Participant.findById(req.participant);
 
-    await PersonalInfo.deleteOne({ participant: req.participant });
+    await personInfo.deleteOne({ participant: req.participant });
 
-    await Participant.updateOne({ _id: participant._id }, { $unset: { personalInfo: '' }});
+    await Participant.updateOne({ _id: participant._id }, { $unset: { personInfo: '' }});
 
     await participant.save();
     

@@ -6,7 +6,7 @@ const {
     getPersonal,
     putPersonal,
     deletePersonal
-} = require('../handlers/personalInfoHandlers');
+} = require('../handlers/personInfoHandlers');
 
 const router = new Router();
 

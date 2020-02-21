@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var JwtAuth = new Schema({
         userId: {
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'Participant'
         },
         token: {
             type: String

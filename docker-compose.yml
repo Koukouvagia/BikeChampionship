@@ -3,6 +3,8 @@ services:
     mongodb:
         image: mongo
         container_name: mongo-database
+        volumes:
+            - mongo-data:/var/lib/mongo/data
         ports:
             - 27017:27017
     node:
@@ -12,3 +14,6 @@ services:
             - 3000:3000
         depends_on:
             - mongodb
+volumes:
+    mongo-data:
+        external: false

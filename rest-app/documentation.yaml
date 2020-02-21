@@ -5,7 +5,7 @@ info:
   description: The Backend of Bike Tournament Api
   termsOfService: terms
 host: 'localhost:3000'
-basePath: /tour-de-degree
+basePath: /
 schemes:
   - http
 consumes:
@@ -60,7 +60,7 @@ components:
             - physiotherapist
         vehicle:
           type: string
-    PersonalInfo:
+    personInfo:
       type: object
       properties:
         name:
@@ -82,7 +82,7 @@ components:
           type: string
         password:
           type: string
-        personalInfo:
+        personInfo:
           type: object
         teamId:
           type: object
@@ -234,7 +234,7 @@ paths:
         '200':
           description: Returns personal info as object
           schema:
-            $ref: '#/components/schemas/PersonalInfo'
+            $ref: '#/components/schemas/personInfo'
         '404':
           description: Returns message 'Participant not found'
     get:
@@ -243,7 +243,7 @@ paths:
         '200':
           description: Returns personal info as object
           schema:
-            $ref: '#/components/schemas/PersonalInfo'
+            $ref: '#/components/schemas/personInfo'
         '404':
           description: Returns message 'Participant not found'
     put:
@@ -274,7 +274,7 @@ paths:
         '200':
           description: Returns personal info as object
           schema:
-            $ref: '#/components/schemas/PersonalInfo'
+            $ref: '#/components/schemas/personInfo'
     delete:
       description: Delete current participant's personal info
       responses:
