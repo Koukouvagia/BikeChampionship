@@ -26,3 +26,12 @@ For example client can make a POST request for creating a team, a GET for gettin
 
 Team models has many fields icluded 3 fields Cyclist,Medical and Mechanic which are ObjectIds typo.This means that when a cyclist document changes ,team who has this cyclist objectId fields changes too.
 The path continues in a same way with Cyclist including Participant field, participant model including personInfo field. In other words field depth reaches level 4
+
+------------------------------------------------------------------------------------------------------------------------------
+
+# Installation Guide
+
+1. Install Docker from https://docs.docker.com/install/
+2. Open your terminal-console
+3. Navigate inside the ~/bike-tournament/ directory
+4. To build and run type: $ docker-compose up -d --build
